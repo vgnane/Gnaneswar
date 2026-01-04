@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Portfolio</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --warm: #ffa500;
+    --warm-light: #ffb84d;
+    --cool: #00d4ff;
+    --cool-light: #4dd4ff;
+    --fire: #ff6b35;
+    --frost: #00a8cc;
+    --dark: #0f172a;
+    --dark-light: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --bg-base: #0a0e27;
+    --border: #1a3a4a;
+    --header-height: 120px;
+    --nav-height: 64px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(90deg, #1a0f2e 0%, #0a0e27 50%, #0f1f3a 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Existing body::before unchanged */
+
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
+.header {
+    background: linear-gradient(90deg, #ff6b35 0%, #ffa500 40%, #00d4ff 60%, #00a8cc 100%);
+    padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 5vw, 2rem);
+    text-align: center;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 12px 40px rgba(255, 107, 53, 0.4), 0 0 30px rgba(0, 212, 255, 0.3);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Existing header::before unchanged */
+
+.header h1,
+.header .title,
+.header .contact {
+    position: relative;
+    z-index: 2;
+}
+
+.header h1 {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    margin-bottom: 0.5rem;
+}
+
+.header .title {
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    opacity: 0.95;
+    margin-bottom: 1rem;
+}
+
+.header .contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: clamp(0.85rem, 3vw, 0.95rem);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.container {
+    max-width: min(1000px, 95vw);
+    margin: 0 auto;
+    padding-inline: clamp(1rem, 5vw, 2rem);
+}
+
+nav {
+    background: linear-gradient(90deg, rgba(15, 23, 42, 0.98) 0%, rgba(10, 14, 39, 0.98) 100%);
+    padding: clamp(0.75rem, 2vw, 1rem) 0;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(90deg, var(--fire), var(--cool)) 1;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    margin-top: -1px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1rem, 4vw, 2rem);
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0 clamp(1rem, 5vw, 2rem);
+    min-height: 44px; /* Touch target */
+}
+
+nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    min-height: 44px; /* Touch-friendly */
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+/* Existing nav hover/focus/after styles unchanged */
+
+.section {
+    margin-block: clamp(2rem, 6vw, 3rem);
+    padding: clamp(1.5rem, 5vw, 2rem);
+    scroll-margin-top: calc(var(--header-height) + var(--nav-height));
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.9) 0%, rgba(15, 31, 58, 0.7) 100%);
+    border-radius: 12px;
+    border-left: 6px solid transparent;
+    border-image: linear-gradient(180deg, var(--fire), var(--cool)) 1;
+    box-shadow: 0 8px 32px rgba(255, 107, 53, 0.1), inset 0 1px 1px rgba(0, 212, 255, 0.1);
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Existing section::before, h2, h3, job, etc. styles unchanged, except skills-grid: */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 15vw, 180px), 1fr));
+    gap: clamp(0.75rem, 2vw, 1rem);
+    margin-top: 1.5rem;
+}
+
+.skill-tag {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(0, 212, 255, 0.15) 100%);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, var(--fire), var(--cool)) 1;
+    padding: clamp(0.6rem, 2vw, 0.9rem) clamp(0.9rem, 3vw, 1.3rem);
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: clamp(0.8rem, 2vw, 0.95rem);
+    color: var(--text-primary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    cursor: default;
+    backdrop-filter: blur(10px);
+}
+
+.skill-tag:hover {
+    transform: translateY(-4px) scale(1.02);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.25) 0%, rgba(0, 212, 255, 0.25) 100%);
+    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.2), 0 0 20px rgba(0, 212, 255, 0.1);
+    border-image: linear-gradient(135deg, var(--warm-light), var(--cool-light)) 1;
+}
+
+.about-content {
+    font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.job,
+.education {
+    margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(0, 212, 255, 0.05) 100%);
+    border-radius: 8px;
+    border-left: 4px solid var(--fire);
+    transition: all 0.3s ease;
+}
+
+.job:hover,
+.education:hover {
+    border-left-color: var(--cool);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(0, 212, 255, 0.08) 100%);
+    transform: translateX(4px);
+}
+
+.job-title,
+h3 {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    color: var(--warm-light);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.company {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    color: var(--cool-light);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+.dates {
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+    font-style: italic;
+}
+
+.description {
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(0.8rem, 3vw, 1.5rem);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: clamp(1.5rem, 4vw, 2rem);
+}
+
+button {
+    padding: clamp(0.8rem, 2.5vw, 1.1rem) clamp(1.5rem, 4vw, 2rem);
+    font-size: clamp(0.85rem, 2.3vw, 1rem);
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-height: 48px;
+    min-width: 200px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--fire) 0%, var(--warm) 100%);
+    color: white;
+    border: 2px solid transparent;
+    z-index: 2;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4), 0 0 30px rgba(255, 165, 0, 0.2);
+    background: linear-gradient(135deg, var(--warm) 0%, var(--warm-light) 100%);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 168, 204, 0.15) 100%);
+    color: var(--cool-light);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, var(--cool), var(--frost)) 1;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(0, 168, 204, 0.25) 100%);
+    border-image: linear-gradient(135deg, var(--cool-light), var(--frost)) 1;
+    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3), 0 0 30px rgba(0, 168, 204, 0.2);
+    color: white;
+}
+
+.btn-secondary:active {
+    transform: translateY(-1px);
+}
+
+button:focus-visible {
+    outline: 3px solid var(--cool);
+    outline-offset: 2px;
+}
+
+.footer {
+    text-align: center;
+    padding-block: clamp(1.5rem, 4vw, 2rem);
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+    margin-top: clamp(2rem, 6vw, 3rem);
+}
+
+/* Enhanced responsive queries */
+@media (max-width: 480px) {
+    :root {
+        --header-height: 80px;
+        --nav-height: 48px;
+    }
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    .header .contact {
+        gap: 0.5rem;
+    }
+    .button-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    button {
+        width: 100%;
+        min-width: unset;
+    }
+    nav a {
+        font-size: 0.9rem;
+    }
+    .skills-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 96px;
+        --nav-height: 56px;
+    }
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    .section {
+        padding: 1.5rem;
+        margin-block: 2rem;
+    }
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+    button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (min-width: 769px) {
+    .button-group {
+        justify-content: center;
+    }
+    button {
+        width: auto;
+    }
+}
+
+@media (min-width: 1025px) {
+    nav ul {
+        gap: 2.5rem;
+    }
+}
+
+/* High-DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .section {
+        border-radius: 16px;
+    }
+    .skill-tag {
+        border-width: 2px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Gnaneswar Reddy Vinta</h1>
+        <p class="title">ENTHUSIASTIC</p>
+        <div class="contact">
+            <span>📍 Residing in Helsinki, Finland. Indian origin (Available immediately, Remote/Onsite/Hybrid)</span>
+            <span>📧 gnaneswar.vinta@gmail.com</span>
+            <span>📱 +358 465521817</span>
+        </div>
+    </div>
+
+    <nav role="navigation" aria-label="Main navigation">
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="about" class="section">
+            <h2>About Me</h2>
+            <p class="about-content">
+                Ambitious tech professional pursuing a Master's degree at the University of Helsinki while working at Tata Consultancy Services. Passionate about technology innovation and continuous learning. Actively seeking work opportunities to expand my technical expertise and contribute to meaningful projects.
+            </p>
+        </section>
+
+        <section id="experience" class="section">
+            <h2>Professional Experience</h2>
+            
+            <div class="job">
+                <div class="job-title">Analyst/Systems Engineer/Devops Engineer/L3 Production Support</div>
+                <div class="company">Tata Consultancy Services (TCS)</div>
+                <div class="dates">Current</div>
+                <div class="description">
+                    Gaining practical industry experience while pursuing advanced education:
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem; color: var(--text-secondary);">
+                        <li>Contributing to software development and technical projects</li>
+                        <li>Building professional experience in enterprise technology solutions</li>
+                        <li>Collaborating with diverse teams in a global organization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="job">
+                <div class="job-title">Graduate Student</div>
+                <div class="company">University of Helsinki</div>
+                <div class="dates">Ongoing</div>
+                <div class="description">
+                    Pursuing advanced studies in technology and computer science:
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem; color: var(--text-secondary);">
+                        <li>Deepening technical knowledge and research capabilities</li>
+                        <li>Engaging in innovative coursework and academic projects</li>
+                        <li>Developing expertise in modern technology domains</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="section">
+            <h2>Education</h2>
+            
+            <div class="education">
+                <h3>Theoretical and Computational Methods</h3>
+                <div class="company">University of Helsinki</div>
+                <div class="dates">Current</div>
+                <div class="description">Pursuing advanced studies in technology and science:
+Deepening technical knowledge and research capabilities(Mix of Sciences like Physics, Computers, Data, Biology, Phsychology.... more to go)
+Engaging in innovative coursework and academic projects(Data Science, Human Computer Interaction...)
+Developing expertise in modern technology domains(Quantum)</div>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <h2>Skills & Expertise</h2>
+            <div class="skills-grid">
+                <div class="skill-tag">Full Stack Development</div>
+                <div class="skill-tag">Software Engineering</div>
+                <div class="skill-tag">Data Analysis</div>
+                <div class="skill-tag">Cloud Technologies</div>
+                <div class="skill-tag">Python</div>
+                <div class="skill-tag">Java</div>
+                <div class="skill-tag">Problem Solving</div>
+                <div class="skill-tag">Team Collaboration</div>
+                <div class="skill-tag">Project Management</div>
+                <div class="skill-tag">Technical Communication</div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2>Get In Touch</h2>
+            <div class="button-group">
+                <button class="btn-primary">Download Resume</button>
+                <button class="btn-secondary" aria-label="View my LinkedIn profile">Connect on LinkedIn</button>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 Professional Portfolio. All rights reserved.</p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Last updated: January 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links — offset aware to account for sticky header/nav
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const header = document.querySelector('.header');
+                    const nav = document.querySelector('nav');
+                    const headerHeight = header ? header.getBoundingClientRect().height : 0;
+                    const navHeight = nav ? nav.getBoundingClientRect().height : 0;
+                    const offset = headerHeight + navHeight;
+                    const targetY = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    // update URL hash without causing an immediate jump
+                    history.replaceState(null, '', this.getAttribute('href'));
+                }
+            });
+        });
+
+        // Download resume button functionality
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', async function() {
+                // Google Doc ID provided by the user
+                const docId = '1tV8mRyLM_TUJL5DUf8a8YtonV8Pen9I0JLCtNCoO6PA';
+                const exportUrl = `https://docs.google.com/document/d/${docId}/export?format=pdf`;
+                // Try to fetch the PDF and force a download; if CORS or permissions prevent direct fetch, fall back to opening in a new tab
+                try {
+                    const resp = await fetch(exportUrl);
+                    if (!resp.ok) throw new Error('Network response not ok');
+                    const blob = await resp.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Gnaneswar_Vinta_Resume.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                } catch (err) {
+                    // Fallback: open in new tab and remind about sharing permissions
+                    window.open(exportUrl, '_blank', 'noopener');
+                    console.warn('Could not fetch PDF directly (CORS or permissions). Ensure the Google Doc is shared as "Anyone with the link can view" for a smoother experience.');
+                }
+            });
+        });
+
+        // View LinkedIn button
+        document.querySelectorAll('.btn-secondary').forEach(button => {
+            button.addEventListener('click', function() {
+                window.open('https://www.linkedin.com/in/gnaneswar-reddy-vinta/', '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
